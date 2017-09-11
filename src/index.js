@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { YTAPI_KEY } from "../config/keys.js";
@@ -16,7 +17,11 @@ class App extends Component {
       videos: [],
       selectedVideo: null
     };
-    YTSearch({ key: YTKey, term: "surfboards" }, videos => {
+    this.videoSearch("surfboards");
+  }
+
+  videoSearch(term) {
+    YTSearch({ key: YTKey, term: term }, videos => {
       this.setState({
         videos: videos,
         selectedVideo: videos[0]
@@ -26,7 +31,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <SearchBar />
+        <SearchBar onSearchTermChange={term => this.videoSearch(term)} />
         <VideoDetail video={this.state.selectedVideo} />
         <VideoList
           onVideoSelect={selectedVideo => this.setState({ selectedVideo })}
